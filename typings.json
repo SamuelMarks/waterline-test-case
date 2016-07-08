@@ -1,0 +1,12 @@
+{
+  "globalDependencies": {
+    "async": "registry:dt/async#1.4.2+20160602152629",
+    "chai": "registry:dt/chai#3.4.0+20160601211834",
+    "mocha": "registry:dt/mocha#2.2.5+20160619032855",
+    "node": "registry:dt/node#6.0.0+20160621231320"
+  },
+  "dependencies": {
+    "waterline": "github:SamuelMarks/cust_typings/waterline/waterline.d.ts",
+    "waterline-postgresql": "github:SamuelMarks/cust_typings/waterline-postgresql/waterline-postgresql.d.ts"
+  }
+}
