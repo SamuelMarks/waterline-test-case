@@ -1,5 +1,5 @@
 import * as async from 'async';
-import {tearDownConnections} from '../shared_tests';
+import {tearDownConnections, clearConnections} from '../shared_tests';
 import {c, main} from '../../main';
 import {destroy, create, retrieve} from './user_api';
 import {IUser, User} from '../../user/model';
@@ -10,11 +10,12 @@ describe('User::model', () => {
     before(done =>
         async.series([
             cb => tearDownConnections(c.connections, cb),
+            cb => clearConnections(cb),
             cb => main([User], (err: any) => cb(err))
         ], done)
     );
 
-    after(done => tearDownConnections(c.connections, done));
+    after(done => tearDownConnections(c.connections, clearConnections(done)));
 
     beforeEach(done => destroy(user_mock, done));
     afterEach(done => destroy(user_mock, done));

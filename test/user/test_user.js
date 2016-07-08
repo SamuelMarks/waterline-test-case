@@ -12,6 +12,9 @@ describe('User::model', function () {
                 return shared_tests_1.tearDownConnections(main_1.c.connections, cb);
             },
             function (cb) {
+                return shared_tests_1.clearConnections(cb);
+            },
+            function (cb) {
                 return main_1.main([model_1.User], function (err) {
                     return cb(err);
                 });
@@ -19,7 +22,7 @@ describe('User::model', function () {
         ], done);
     });
     after(function (done) {
-        return shared_tests_1.tearDownConnections(main_1.c.connections, done);
+        return shared_tests_1.tearDownConnections(main_1.c.connections, shared_tests_1.clearConnections(done));
     });
     beforeEach(function (done) {
         return user_api_1.destroy(user_mock, done);

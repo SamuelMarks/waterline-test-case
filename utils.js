@@ -39,7 +39,6 @@ function uri_to_config(uri) {
                             database: s.substr(slash_at + 1)
                         };
                     }
-
                     var at_at = arr[1].search('@');
                     if (at_at === -1)
                         return host_db(arr[1]);
