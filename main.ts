@@ -13,10 +13,6 @@ export interface IObjectCtor extends ObjectConstructor {
 
 declare var Object: IObjectCtor;
 
-export const c: {collections: Collection[], connections: Connection[]} = {
-    collections: null, connections: null
-};
-
 const db_uri = process.env.RDBMS_URI || process.env.DATABASE_URL || process.env.POSTGRES_URL;
 
 export const waterline_config = {
@@ -42,17 +38,15 @@ export function main(models: Array<{}>,
     models.map(model => waterline.loadCollection(Collection.extend(model)));
     console.info('ORM initialised:', models.map(model => model['identity']));
 
-    waterline.initialize(waterline_config, (err, ontology) => {
-        if (err !== null) return callback(err);
-
-        c.collections = <Collection[]>ontology.collections;
-        c.connections = <Connection[]>ontology.connections;
-        return callback(null, c.collections, c.connections);
-    });
+    waterline.initialize(waterline_config, (err, ontology) =>
+        err !== null ? callback(err) :
+            callback(null, <Collection[]>ontology.collections, <Connection[]>ontology.connections)
+    );
 }
 
 if (require.main === module) {
-    main([User, Vame], (err: WLError, collections?: Collection[], connections?: Connection[]) => {
+    main([User, Vame], (err: WLError) => {
         if (err) throw err;
+        console.info('Run `npm test` to duplicate the bug');
     })
 }

@@ -6,9 +6,6 @@ var waterline_postgres = require('waterline-postgresql');
 var utils_1 = require('./utils');
 var model_1 = require('./user/model');
 var model_2 = require('./vame/model');
-exports.c = {
-    collections: null, connections: null
-};
 var db_uri = process.env.RDBMS_URI || process.env.DATABASE_URL || process.env.POSTGRES_URL;
 exports.waterline_config = {
     adapters: {
@@ -33,17 +30,15 @@ function main(models, callback) {
         return model['identity'];
     }));
     waterline.initialize(exports.waterline_config, function (err, ontology) {
-        if (err !== null)
-            return callback(err);
-        exports.c.collections = ontology.collections;
-        exports.c.connections = ontology.connections;
-        return callback(null, exports.c.collections, exports.c.connections);
+        return err !== null ? callback(err) :
+            callback(null, ontology.collections, ontology.connections);
     });
 }
 exports.main = main;
 if (require.main === module) {
-    main([model_1.User, model_2.Vame], function (err, collections, connections) {
+    main([model_1.User, model_2.Vame], function (err) {
         if (err)
             throw err;
+        console.info('Run `npm test` to duplicate the bug');
     });
 }

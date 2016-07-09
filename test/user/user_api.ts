@@ -1,11 +1,11 @@
 import {expect} from 'chai';
 import {Query, WLError} from 'waterline';
-import {c} from '../../main';
 import {fmtError} from '../../utils';
 import {IUser, IUserResp} from '../../user/model';
+import {Collection} from 'waterline';
 
-export function create(user: IUser, cb: (error: Error|WLError, user?: IUser) => void) {
-    const User: Query = c.collections['user_tbl'];
+export function create(collections: Collection[], user: IUser, cb: (error: Error|WLError, user?: IUser) => void) {
+    const User: Query = collections['user_tbl'];
 
     User.create(user).exec((err, created_user: IUserResp) => {
         err = fmtError(err);
@@ -23,8 +23,8 @@ export function create(user: IUser, cb: (error: Error|WLError, user?: IUser) => 
     });
 }
 
-export function retrieve(user: IUser, cb: (error: Error|WLError, user?: IUser) => void) {
-    const User: Query = c.collections['user_tbl'];
+export function retrieve(collections: Collection[], user: IUser, cb: (error: Error|WLError, user?: IUser) => void) {
+    const User: Query = collections['user_tbl'];
 
     User.findOne(user).exec((err, retrieved_user: IUserResp) => {
         err = fmtError(err);
@@ -42,8 +42,8 @@ export function retrieve(user: IUser, cb: (error: Error|WLError, user?: IUser) =
     });
 }
 
-export function destroy(user: IUser, cb: (error: Error|WLError) => void) {
-    const User: Query = c.collections['user_tbl'];
+export function destroy(collections: Collection[], user: IUser, cb: (error: Error|WLError) => void) {
+    const User: Query = collections['user_tbl'];
 
     User.destroy(user).exec((err) => {
         err = fmtError(err);

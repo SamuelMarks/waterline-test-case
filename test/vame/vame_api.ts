@@ -1,11 +1,10 @@
 import {expect} from 'chai';
-import {Query, WLError} from 'waterline';
-import {c} from '../../main';
+import {Query, WLError, Collection} from 'waterline';
 import {fmtError} from '../../utils';
 import {IVame, IVameResp} from '../../vame/model';
 
-export function create(vame: IVame, cb: (error: Error|WLError, vame?: IVame) => void) {
-    const Vame: Query = c.collections['vame_tbl'];
+export function create(collections: Collection[], vame: IVame, cb: (error: Error|WLError, vame?: IVame) => void) {
+    const Vame: Query = collections['vame_tbl'];
 
     Vame.create(vame).exec((err, created_vame: IVameResp) => {
         err = fmtError(err);
@@ -23,8 +22,8 @@ export function create(vame: IVame, cb: (error: Error|WLError, vame?: IVame) => 
     });
 }
 
-export function retrieve(vame: IVame, cb: (error: Error|WLError, vame?: IVame) => void) {
-    const Vame: Query = c.collections['vame_tbl'];
+export function retrieve(collections: Collection[], vame: IVame, cb: (error: Error|WLError, vame?: IVame) => void) {
+    const Vame: Query = collections['vame_tbl'];
 
     Vame.findOne(vame).exec((err, retrieved_vame: IVameResp) => {
         err = fmtError(err);
@@ -42,8 +41,8 @@ export function retrieve(vame: IVame, cb: (error: Error|WLError, vame?: IVame) =
     });
 }
 
-export function destroy(vame: IVame, cb: (error: Error|WLError) => void) {
-    const Vame: Query = c.collections['vame_tbl'];
+export function destroy(collections: Collection[], vame: IVame, cb: (error: Error|WLError) => void) {
+    const Vame: Query = collections['vame_tbl'];
 
     Vame.destroy(vame).exec((err) => {
         err = fmtError(err);

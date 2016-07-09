@@ -1,9 +1,8 @@
 "use strict";
 var chai_1 = require('chai');
-var main_1 = require('../../main');
 var utils_1 = require('../../utils');
-function create(user, cb) {
-    var User = main_1.c.collections['user_tbl'];
+function create(collections, user, cb) {
+    var User = collections['user_tbl'];
     User.create(user).exec(function (err, created_user) {
         err = utils_1.fmtError(err);
         var created_user_json;
@@ -24,8 +23,8 @@ function create(user, cb) {
     });
 }
 exports.create = create;
-function retrieve(user, cb) {
-    var User = main_1.c.collections['user_tbl'];
+function retrieve(collections, user, cb) {
+    var User = collections['user_tbl'];
     User.findOne(user).exec(function (err, retrieved_user) {
         err = utils_1.fmtError(err);
         var retrieved_user_json;
@@ -46,8 +45,8 @@ function retrieve(user, cb) {
     });
 }
 exports.retrieve = retrieve;
-function destroy(user, cb) {
-    var User = main_1.c.collections['user_tbl'];
+function destroy(collections, user, cb) {
+    var User = collections['user_tbl'];
     User.destroy(user).exec(function (err) {
         err = utils_1.fmtError(err);
         try {

@@ -1,30 +1,32 @@
 import * as async from 'async';
-import {tearDownConnections, clearConnections} from '../shared_tests';
-import {c, main} from '../../main';
+import {tearDownConnections} from '../shared_tests';
+import {main} from '../../main';
 import {destroy, create, retrieve} from './user_api';
 import {IUser, User} from '../../user/model';
+import {Connection, Collection, WLError} from 'waterline';
 
 const user_mock: IUser = {email: 'foo@bar.com'};
 
 describe('User::model', () => {
     before(done =>
-        async.series([
-            cb => tearDownConnections(c.connections, cb),
-            cb => clearConnections(cb),
-            cb => main([User], (err: any) => cb(err))
-        ], done)
+        main([User], (err: WLError, collections?: Collection[], connections?: Connection[]) => {
+            if (err) return done(err);
+            this.collections = collections;
+            this.connections = connections;
+            return done();
+        })
     );
 
-    after(done => tearDownConnections(c.connections, clearConnections(done)));
+    after(done => tearDownConnections(this.connections, done));
 
-    beforeEach(done => destroy(user_mock, done));
-    afterEach(done => destroy(user_mock, done));
+    beforeEach(done => destroy(this.collections, user_mock, done));
+    afterEach(done => destroy(this.collections, user_mock, done));
 
     describe('create user', () => {
         it('should create user', done => {
             async.series([
-                    cb => create(user_mock, cb),
-                    cb => retrieve(user_mock, cb)
+                    cb => create(this.collections, user_mock, cb),
+                    cb => retrieve(this.collections, user_mock, cb)
                 ],
                 done
             );
