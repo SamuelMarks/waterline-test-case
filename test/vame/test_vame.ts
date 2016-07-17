@@ -8,25 +8,27 @@ import {WLError, Collection, Connection} from 'waterline';
 const vame_mock: IVame = {vame: 'Ola'};
 
 describe('Vame::model', () => {
+    let collections, connections;
+
     before(done =>
-        main([Vame], (err: WLError, collections?: Collection[], connections?: Connection[]) => {
+        main([Vame], (err: WLError, _collections?: Collection[], _connections?: Connection[]) => {
             if (err) return done(err);
-            this.collections = collections;
-            this.connections = connections;
+            collections = _collections;
+            connections = _connections;
             return done();
         })
     );
 
-    after(done => tearDownConnections(this.connections, done));
+    after(done => tearDownConnections(connections, done));
 
-    beforeEach(done => destroy(this.collections, vame_mock, done));
-    afterEach(done => destroy(this.collections, vame_mock, done));
+    beforeEach(done => destroy(collections, vame_mock, done));
+    afterEach(done => destroy(collections, vame_mock, done));
 
     describe('create vame', () => {
         it('should create vame', done => {
             async.series([
-                    cb => create(this.collections, vame_mock, cb),
-                    cb => retrieve(this.collections, vame_mock, cb)
+                    cb => create(collections, vame_mock, cb),
+                    cb => retrieve(collections, vame_mock, cb)
                 ],
                 done
             );
